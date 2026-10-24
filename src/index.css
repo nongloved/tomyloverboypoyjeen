@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* self-hosted — not on Google Fonts, downloaded from fontspace.com
+   (freeware, free for personal + commercial use) */
+@font-face {
+  font-family: "Bryndan Write";
+  src: url("./assets/fonts/BryndanWrite.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-serif: "Cormorant Garamond", "Noto Serif Thai", serif;
+  --font-hand: "Caveat", "Noto Sans Thai", cursive;
+  --font-bryndan: "Bryndan Write", "Caveat", cursive;
+  --font-sans: "Inter", "Noto Sans Thai", system-ui, sans-serif;
+
+  /* off-white / cream / navy / black, from the reference palette
+     (cream #F8F0E5, navy #082052) */
+  --color-ivory: #f8f0e5;
+  --color-ivory-deep: #efe4d2;
+  --color-beige: #e3d5bd;
+  --color-rose: #7186ac;
+  --color-rose-deep: #082052;
+  --color-dusty: #aab8d1;
+  --color-ink: #14141a;
+  --color-ink-soft: #4a5570;
+  --color-paper: #fffdf9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--color-dusty);
+  color: var(--color-ink);
+}
+
+/* thin, quiet scrollbar for reading panels */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-dusty) transparent;
+}
+.scroll-thin::-webkit-scrollbar { width: 5px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: var(--color-dusty); border-radius: 3px; }
+.scroll-thin::-webkit-scrollbar-track { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

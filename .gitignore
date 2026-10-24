@@ -1,0 +1,42 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# migrated to the content_items table in Supabase — kept locally as personal
+# backups, never shipped (see SUPABASE_SETUP.md)
+src/assets/timeline/
+src/assets/favu/
+src/assets/sillyus/
+src/assets/music/
+src/assets/posters/
+
+# raw originals — only each folder's optimized/ subfolder is actually
+# imported by the app, so only that part is tracked
+src/assets/reminder/*
+!src/assets/reminder/optimized/
+src/assets/cover/*
+!src/assets/cover/optimized/
