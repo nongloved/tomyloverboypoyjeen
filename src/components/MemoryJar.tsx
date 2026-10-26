@@ -75,11 +75,39 @@ const CORK_STYLE: CSSProperties = {
   backgroundPosition: "0 0, 4px 6px",
 };
 
-// deterministic tilt derived from id, so it doesn't jitter on re-render
-function tiltFromId(id: string) {
+// deterministic pseudo-random hash, so added-item styling stays stable
+// across re-renders instead of jittering on every paint
+function hashString(s: string) {
   let hash = 0;
-  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) % 1000;
-  return (hash % 11) - 5; // -5..5deg
+  for (let i = 0; i < s.length; i++) hash = (hash * 31 + s.charCodeAt(i)) % 100000;
+  return hash;
+}
+
+const BOARD_ITEM_DECOR: ((className: string) => import("react").ReactNode)[] = [
+  (cn) => <WashiTape className={cn} variant="navy" rotate={-8} width={32} />,
+  (cn) => <WashiTape className={cn} variant="gingham" rotate={10} width={32} />,
+  (cn) => <WashiTape className={cn} variant="denim" rotate={-6} width={32} />,
+  (cn) => <WashiTape className={cn} variant="plaid" rotate={7} width={32} />,
+  (cn) => <BowSticker className={cn} rotate={-6} size={28} />,
+  (cn) => <HeartPatchSticker className={cn} rotate={8} size={24} />,
+  (cn) => <IconSticker variant="glossyHeart" className={cn} rotate={-6} size={20} />,
+  (cn) => <IconSticker variant="starfish" className={cn} rotate={10} size={22} />,
+  (cn) => <IconSticker variant="buttonNavy" className={cn} rotate={6} size={18} />,
+  (cn) => <PenguinSticker variant="snowball" className={cn} rotate={-6} size={24} />,
+  (cn) => <GymAnimalSticker variant="catflex" className={cn} rotate={8} size={26} />,
+];
+
+const BOARD_ITEM_CORNERS = ["-top-2 -left-2 z-20", "-top-2 -right-2 z-20"];
+
+// random-looking jitter + sticker per card, seeded off its id so a given
+// item always lands the same way — kept small (±5deg, ±4px) so it can never
+// overlap a neighbor in the flex-wrap flow it still lives in
+function boardItemStyle(id: string) {
+  const rotate = (hashString(id) % 11) - 5;
+  const offsetY = (hashString(`${id}y`) % 9) - 4;
+  const decor = BOARD_ITEM_DECOR[hashString(`${id}d`) % BOARD_ITEM_DECOR.length];
+  const corner = BOARD_ITEM_CORNERS[hashString(`${id}c`) % BOARD_ITEM_CORNERS.length];
+  return { rotate, offsetY, decor, corner };
 }
 
 function toSong(item: ContentItem): Song {
@@ -400,9 +428,19 @@ export function MemoryJar({ onNext }: { onNext: () => void }) {
           <IconSticker variant="starfish" className="left-10 bottom-4 z-20" rotate={-14} size={22} />
 
           <div className="relative flex flex-wrap items-start justify-center gap-3">
-            {boardItems.map((item) => (
-              <div key={item.id}>{renderBoardCard(item, tiltFromId(item.id))}</div>
-            ))}
+            {boardItems.map((item) => {
+              const { rotate, offsetY, decor, corner } = boardItemStyle(item.id);
+              return (
+                <div
+                  key={item.id}
+                  className="relative"
+                  style={{ transform: `translateY(${offsetY}px)` }}
+                >
+                  {decor(corner)}
+                  {renderBoardCard(item, rotate)}
+                </div>
+              );
+            })}
             <button
               type="button"
               onClick={() => setAddOpen(true)}
