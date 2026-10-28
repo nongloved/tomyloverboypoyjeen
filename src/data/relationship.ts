@@ -75,6 +75,10 @@ export const relationshipData = {
   theme:
     "We didn't become us in one moment. We became us through hundreds of little moments.",
 
+  // EDIT: paste a Spotify playlist share link here — powers the floating
+  // music player (bottom-right on every page). Leave empty to hide it.
+  backgroundPlaylistUrl: "https://open.spotify.com/playlist/5t9cQzQtnlCqjeDHD2ZNdn?si=OlvAZO1nTQCULWPG5NqY2Q&utm_source=copy-link&pi=OsjfIKD7ReGIM",
+
   opening: {
     addressee: "Poyjeen",
     subheading: "open when you're ready",

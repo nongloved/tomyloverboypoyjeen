@@ -26,7 +26,7 @@ import { GiftReveal } from "../components/GiftReveal";
 // import { FutureMemories } from "../components/FutureMemories";
 import { EndScreen } from "../components/EndScreen";
 import { ProgressIndicator } from "../components/ui/ProgressIndicator";
-import { MusicToggle } from "../components/ui/MusicToggle";
+import { BackgroundPlaylist } from "../components/ui/BackgroundPlaylist";
 
 const STEPS = [
   "opening",
@@ -83,7 +83,7 @@ export function Home() {
           canGoForward={stepIndex < STEPS.length - 1}
         />
       )}
-      <MusicToggle />
+      <BackgroundPlaylist />
 
       <AnimatePresence mode="wait">
         {step === "opening" && <Envelope key="opening" onOpened={goNext} />}

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { SectionShell } from "./ui/SectionShell";
 import { ContinueButton } from "./ui/ContinueButton";
+import { AddSongModal } from "./ui/AddSongModal";
 import { fetchContentItems, type ContentItem } from "../lib/content";
 
 function toSong(item: ContentItem) {
@@ -17,6 +18,7 @@ function toSong(item: ContentItem) {
 
 export function SongSection({ onNext }: { onNext: () => void }) {
   const [songs, setSongs] = useState<ReturnType<typeof toSong>[]>([]);
+  const [addOpen, setAddOpen] = useState(false);
 
   useEffect(() => {
     fetchContentItems("songs").then((items) => setSongs(items.map(toSong)));
@@ -60,7 +62,22 @@ export function SongSection({ onNext }: { onNext: () => void }) {
             </div>
           </div>
         ))}
+
+        <button
+          type="button"
+          onClick={() => setAddOpen(true)}
+          className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-rose/30 px-4 py-4 font-sans text-sm text-ink-soft/60 transition-colors hover:border-rose-deep/40 hover:text-rose-deep"
+        >
+          <span className="text-lg leading-none">+</span>
+          add a song
+        </button>
       </div>
+
+      <AddSongModal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        onAdded={(item) => setSongs((prev) => [...prev, toSong(item)])}
+      />
 
       <ContinueButton onClick={onNext}>continue →</ContinueButton>
     </SectionShell>
